@@ -1,6 +1,6 @@
 FROM rust:1-slim-bookworm AS builder
 
-# Install all required build dependencies
+# Install all build dependencies
 RUN apt-get update && apt-get install -y \
     clang \
     libclang-dev \
@@ -8,7 +8,12 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
     make \
+    build-essential \
+    liburing-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Install rustfmt (required by some build scripts)
+RUN rustup component add rustfmt
 
 WORKDIR /app
 COPY . .
