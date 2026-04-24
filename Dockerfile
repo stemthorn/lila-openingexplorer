@@ -1,6 +1,5 @@
 FROM rust:1-slim-bookworm AS builder
 
-# Install all build dependencies
 RUN apt-get update && apt-get install -y \
     clang \
     libclang-dev \
@@ -10,22 +9,22 @@ RUN apt-get update && apt-get install -y \
     make \
     build-essential \
     liburing-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && rustup component add rustfmt
 
-# Install rustfmt (required by some build scripts)
-RUN rustup component add rustfmt
+# Reduce build memory usage
+ENV CARGO_INCREMENTAL=0
+ENV RUSTFLAGS="-C link-arg=-s"
 
 WORKDIR /app
 COPY . .
 
-RUN cargo build --release
+# Build with fewer parallel jobs to lower peak memory
+RUN cargo build --release --jobs 2
 
-# Runtime stage
 FROM debian:bookworm-slim
 
-RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/target/release/lila-openingexplorer /usr/local/bin/
 
