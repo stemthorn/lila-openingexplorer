@@ -135,7 +135,11 @@ async fn serve() {
     join_set.spawn(periodic_openings_import(openings));
 
     let blacklist: &'static RwLock<HashSet<UserId>> = Box::leak(Box::default());
-    join_set.spawn(periodic_blacklist_update(blacklist, opt.lila.clone()));
+    if std::env::var("DISABLE_BLACKLIST_UPDATE").ok().as_deref() != Some("1") {
+        join_set.spawn(periodic_blacklist_update(blacklist, opt.lila.clone()));
+    } else {
+        log::info!("blacklist updater disabled via DISABLE_BLACKLIST_UPDATE=1");
+    }
 
     let db = task::block_in_place(|| Arc::new(Database::open(opt.db).expect("db")));
     let player_indexer =
