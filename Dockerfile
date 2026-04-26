@@ -1,5 +1,16 @@
 FROM rust:1-bookworm AS builder
 
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    clang \
+    libclang-dev \
+    llvm-dev \
+    pkg-config \
+    libssl-dev \
+    liburing-dev \
+    cmake \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 COPY . .
 RUN cargo build --release --bin lila-openingexplorer
