@@ -19,6 +19,7 @@ FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y \
     ca-certificates \
+    liburing2 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/target/release/lila-openingexplorer /usr/local/bin/lila-openingexplorer
