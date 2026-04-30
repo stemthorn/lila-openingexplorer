@@ -1,0 +1,3 @@
+# PGN tools: fix_pgn_dates.py, import-master.py
+chess>=1.10.0
+requests>=2.28.0

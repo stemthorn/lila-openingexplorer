@@ -1,4 +1,30 @@
-/target
-/_db
+## Data directories (must never be committed)
+/_db/
+/_db_old/
+/pgn/
+
+## Optional broad data patterns
 *.pgn
 *.zst
+
+## Python artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+## Virtual environments
+.venv/
+venv/
+env/
+
+## Rust/Cargo build artifacts
+/target/
+
+## Local helper outputs
+date_fails.pgn
+*.log
+
+## Local OS/checksum artifacts
+.DS_Store
+*.sha256
