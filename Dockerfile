@@ -31,4 +31,4 @@ EXPOSE 8080
 ENV DISABLE_BLACKLIST_UPDATE=1
 
 # Render should pass PORT, with fallback for local container runs.
-CMD ["/bin/sh", "-lc", "lila-openingexplorer --db /data --bind 0.0.0.0:${PORT:-8080}"]
+CMD ["/bin/sh", "-lc", "lila-openingexplorer --db /data/_db --bind 0.0.0.0:${PORT:-8080}"]
