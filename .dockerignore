@@ -1,0 +1,12 @@
+_db
+_db_old
+target
+pgn
+*.pgn
+.git
+.github
+venv
+.venv
+new-import
+*.tar
+*.tar.zst
