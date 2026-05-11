@@ -15,27 +15,27 @@ WORKDIR /app
 COPY . .
 RUN cargo build --release --bin lila-openingexplorer
 
+# ==================== FINAL STAGE ====================
 FROM debian:bookworm-slim
 
-RUN apt-get update && apt-get install -y \
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     liburing2 \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy the compiled binary
 COPY --from=builder /app/target/release/lila-openingexplorer /usr/local/bin/lila-openingexplorer
 
 WORKDIR /data
 EXPOSE 8080
 
-# Masters-only operational default; can be overridden per environment.
+# Masters-only operational default
 ENV DISABLE_BLACKLIST_UPDATE=1
 
-# Render should pass PORT, with fallback for local container runs.
-CMD ["/bin/sh", "-lc", "lila-openingexplorer --db /data/_db --bind 0.0.0.0:${PORT:-8080}"]
-
-# Copy the wrapper
+# === Stockfish wrapper (defensive version) ===
 COPY start-with-stockfish.sh /start-with-stockfish.sh
 RUN chmod +x /start-with-stockfish.sh
 
-# Use it as entrypoint
 ENTRYPOINT ["/start-with-stockfish.sh"]
