@@ -2,6 +2,7 @@
 /_db/
 /_db_old/
 /pgn/
+/data/
 
 ## Optional broad data patterns
 *.pgn
@@ -20,6 +21,9 @@ env/
 
 ## Rust/Cargo build artifacts
 /target/
+
+## Go build output (optional local build outside Docker)
+/stockfish-http-wrapper
 
 ## Local helper outputs
 date_fails.pgn

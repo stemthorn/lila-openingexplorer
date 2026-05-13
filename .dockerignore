@@ -1,12 +1,13 @@
-_db
-_db_old
-target
-pgn
-*.pgn
-.git
-.github
-venv
-.venv
-new-import
-*.tar
-*.tar.zst
+# Deny-by-default: keep Docker build context small (exclude pgn/, data/, archives, venv).
+*
+!Cargo.toml
+!Cargo.lock
+!rustfmt.toml
+!src/
+!src/**
+!benches/
+!benches/**
+!Caddyfile
+!start-all.sh
+!stockfish-wrapper/
+!stockfish-wrapper/**

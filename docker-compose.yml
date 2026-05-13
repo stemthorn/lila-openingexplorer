@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  lila-openingexplorer:
+    build: .
+    image: lila-openingexplorer:local
+    ports:
+      - "8080:8080"          # Access everything on http://localhost:8080
+    environment:
+      - PORT=8080
+    volumes:
+      - ./data:/data         # Persistent data (your RocksDB + Stockfish)
+    restart: unless-stopped
+    # Optional: add for debugging
+    # command: /start-all.sh
