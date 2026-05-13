@@ -16,7 +16,11 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 COPY Cargo.toml Cargo.lock ./
-RUN cargo fetch --locked
+RUN mkdir -p src benches \
+    && echo "fn main() {}" > src/main.rs \
+    && echo "fn main() {}" > benches/benches.rs \
+    && cargo fetch --locked \
+    && rm -rf src benches
 COPY src ./src
 COPY benches ./benches
 RUN cargo build --release --bin lila-openingexplorer

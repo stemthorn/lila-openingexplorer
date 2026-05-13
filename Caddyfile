@@ -6,20 +6,25 @@
 :{$PORT} {
     log
 
-    respond /health 200
+    # `route` preserves source order; Caddy's default directive sort would put
+    # the unmatched `respond "Not found"` before every `reverse_proxy` and
+    # short-circuit all routes to 404.
+    route {
+        respond /health 200
 
-    reverse_proxy /stockfish/uci     127.0.0.1:8082
-    reverse_proxy /stockfish/health  127.0.0.1:8082
-    reverse_proxy /stockfish/metrics 127.0.0.1:8082
+        reverse_proxy /stockfish/uci     127.0.0.1:8082
+        reverse_proxy /stockfish/health  127.0.0.1:8082
+        reverse_proxy /stockfish/metrics 127.0.0.1:8082
 
-    reverse_proxy /monitor*    127.0.0.1:9002
-    reverse_proxy /compact     127.0.0.1:9002
-    reverse_proxy /import*     127.0.0.1:9002
-    reverse_proxy /masters*    127.0.0.1:9002
-    reverse_proxy /master*     127.0.0.1:9002
-    reverse_proxy /lichess*    127.0.0.1:9002
-    reverse_proxy /player*     127.0.0.1:9002
-    reverse_proxy /personal*   127.0.0.1:9002
+        reverse_proxy /monitor*    127.0.0.1:9002
+        reverse_proxy /compact     127.0.0.1:9002
+        reverse_proxy /import*     127.0.0.1:9002
+        reverse_proxy /masters*    127.0.0.1:9002
+        reverse_proxy /master*     127.0.0.1:9002
+        reverse_proxy /lichess*    127.0.0.1:9002
+        reverse_proxy /player*     127.0.0.1:9002
+        reverse_proxy /personal*   127.0.0.1:9002
 
-    respond "Not found" 404
+        respond "Not found" 404
+    }
 }
