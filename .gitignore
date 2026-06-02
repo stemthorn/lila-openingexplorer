@@ -27,6 +27,7 @@ env/
 
 ## Local helper outputs
 date_fails.pgn
+Filter_blitz_bullet.py
 *.log
 
 ## Local OS/checksum artifacts
